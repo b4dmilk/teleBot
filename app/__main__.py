@@ -1,23 +1,21 @@
+import asyncio
 from aiogram import Dispatcher
-from aiogram.utils import executor
 import os
 from dotenv import load_dotenv
-from aiogram import Bot, Dispatcher, types
+from aiogram import Bot, Dispatcher
+from handlers import handlers
+
+# launching bot
+async def main():
+    load_dotenv('.env')  
+    token = os.getenv("TOKEN_API")
+    bot = Bot(token)
+    dp = Dispatcher()
+    dp.include_routers(handlers.router)
+    
+    await bot.delete_webhook(drop_pending_updates=True)
+    await dp.start_polling(bot)
 
 
-load_dotenv('.env')  
-token = os.getenv("TOKEN_API")
-bot = Bot(token)
-dp = Dispatcher(bot)
-
-@dp.message_handler(commands=['start'])
-async def start_command(message: types.Message):
-        await bot.send_message(chat_id=message.from_user.id,text='Hi')
-        await message.delete()
-
-
-if __name__ == '__main__':
-    executor.start_polling(
-        dp, skip_updates=True
-    )
-
+if __name__ == "__main__":
+    asyncio.run(main())
