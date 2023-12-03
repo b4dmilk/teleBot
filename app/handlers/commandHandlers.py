@@ -1,6 +1,7 @@
 from aiogram import Router, F
 from aiogram.types import Message
 from aiogram.filters import CommandStart, Command
+from keyboards.keyboards import get_main_kb
 
 HELP_COMMAND = """
 /help - список команд,
@@ -13,7 +14,7 @@ router = Router()
 @router.message(CommandStart())  
 async def cmd_start(message: Message):
     await message.answer(
-        "Are you satisfied with your work?",
+        "Are you satisfied with your work?", reply_markup=get_main_kb()
     )
 
 @router.message(Command("help"))
