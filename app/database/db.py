@@ -5,20 +5,23 @@ async def db_start():
 
     db = sq.connect('main.db')
     cur = db.cursor()
-    cur.execute("CREATE TABLE IF NOT EXISTS profile(user_id TEXT PRIMARY KEY, name TEXT, password TEXT, groups TEXT)")
+    cur.execute("CREATE TABLE IF NOT EXISTS profile(user_id TEXT PRIMARY KEY, name TEXT, groups TEXT)")
 
     db.commit()
 
 
-# async def create_profile(user_id):
-#     user = cur.execute("SELECT 1 FROM profile WHERE user_id == '{key}'".format(key=user_id)).fetchone()
-#     if not user:
-#         cur.execute("INSERT INTO profile VALUES(?, ?, ?, ?)", (user_id, '', '', ''))
-#         db.commit()
 
 
-# async def edit_profile(state, user_id):
-#     async with state.proxy() as data:
-#         cur.execute("UPDATE profile SET group = '{}', password = '{}', name = '{}' WHERE user_id == '{}'".format(
-#             data['group'], data['password'], user_id))
-#         db.commit()
+#Create profile
+async def create_profile(user_id):
+    user = cur.execute("SELECT 1 FROM profile WHERE user_id == '{key}'".format(key=user_id)).fetchone()
+    if not user:
+        cur.execute("INSERT INTO profile VALUES(?, ?, ?)", (user_id, '', ''))
+        db.commit()
+
+
+async def edit_profile(state, user_id):
+    data = await state.get_data()
+    cur.execute("UPDATE profile SET groups = '{}',  name = '{}' WHERE user_id == '{}'".format(
+        data['groups'], data['name'], user_id))
+    db.commit()
