@@ -4,7 +4,7 @@ from aiogram.filters import CommandStart, Command
 from aiogram.filters.state import StateFilter, StatesGroup, State
 from keyboards.keyboards import get_main_kb
 from aiogram.fsm.context import FSMContext
-from database.db import create_profile, edit_profile
+from database.db import create_profile, edit_profile,all_profile
 HELP_COMMAND = """
 /help - список команд,
 <em>/start - начать работу с ботом</em>
@@ -15,6 +15,16 @@ router = Router()
 class createNewProfile(StatesGroup):
     name = State()
     groups = State()
+
+@router.message(Command("all"))
+async def all_user(message: Message):
+    await message.answer(
+        text='dfk'
+
+    )
+    result = await all_profile()
+    await message.answer(f"Your payload: {result}")
+
 
 @router.message(CommandStart())  
 async def cmd_start(message: Message):
