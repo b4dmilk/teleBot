@@ -6,6 +6,8 @@ from aiogram.fsm.context import FSMContext
 from database.db import create_article
 #from keyboards.inlineKeyboards import cmd_random, get_inline_keyboard
 from aiogram.types.web_app_info import WebAppInfo
+from aiogram.utils.keyboard import InlineKeyboardBuilder
+from aiogram.types import InlineKeyboardButton
 
 
 
@@ -14,9 +16,6 @@ router = Router()
 ABOUT = """Hi, my dear friend! 
         It's my contacts: 
 """
-from aiogram.utils.keyboard import InlineKeyboardBuilder
-from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
-from aiogram.types import Message
 
 class createNewArticle(StatesGroup):
     name = State()

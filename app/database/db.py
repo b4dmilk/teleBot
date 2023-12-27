@@ -3,16 +3,12 @@ import sqlite3 as sq
 async def db_start():
     global db, cur
 
-# PRAGMA foreign_keys = on
 with sq.connect('main.db') as db:
     cur = db.cursor()
     cur.execute("CREATE TABLE IF NOT EXISTS profile(user_id TEXT PRIMARY KEY, name TEXT, groups TEXT)")
     cur.execute(
         "CREATE TABLE IF NOT EXISTS articles(article_id INTEGER PRIMARY KEY AUTOINCREMENT, user_id TEXT NOT NULL, name TEXT DEFAULT NAME, desc TEXT, article TEXT, FOREIGN KEY (user_id) REFERENCES profile (user_id))")
     db.commit()
-
-
-
 
 #Create profile
 async def create_profile(user_id):
@@ -44,3 +40,11 @@ async def create_article(state, user_id):
         cur.execute("INSERT INTO articles VALUES( NULL, ?, ?, ?, ?)", ( user_id, data['name'], data['desc'], data['article']))
         db.commit()
 
+#Create article
+async def create_table(state):
+        data = await state.get_data()
+        sql = "CREATE TABLE IF NOT EXISTS " + data['name']  + """  
+        (table_id INTEGER PRIMARY KEY AUTOINCREMENT, user_id TEXT NOT NULL, name TEXT DEFAULT NAME, desc TEXT, article TEXT, FOREIGN KEY (user_id ) REFERENCES profile (user_id))
+        """ 
+        cur.execute(sql)
+        db.commit()

@@ -3,7 +3,7 @@ from aiogram import Dispatcher
 import os
 from dotenv import load_dotenv
 from aiogram import Bot, Dispatcher
-from handlers import commandHandlers, other
+from handlers import commandHandlers, other, createTable
 from database.db import db_start
 
 
@@ -17,7 +17,7 @@ async def main():
     token = os.getenv("TOKEN_API")
     bot = Bot(token)
     dp = Dispatcher()
-    dp.include_routers(commandHandlers.router, other.router)
+    dp.include_routers(commandHandlers.router, other.router, createTable.router)
     await on_startup()
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)
